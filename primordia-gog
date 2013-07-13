@@ -1,0 +1,53 @@
+#!/bin/bash
+# Date : (2013-07-13 10-00)
+# Last revision : (2013-07-13 10-00)
+# Wine version used : 1.4.1
+# Distribution used to test : Fedora 17
+# Author : retronautti
+# Script licence : GPL v.2
+# Program licence : Retail
+# Depend :
+
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+
+AUTHOR="retronautti"
+GOGID="primordia"
+PREFIX="Primordia"
+# setup_primordia_2.0.0.2.exe
+MD5SUM="cee37bbacec9f8feaa3b2899c33ef8ab"
+WORKING_WINE_VERSION="1.4.1"
+
+TITLE="GOG.com - Primordia"
+SHORTCUT_NAME="Primordia"
+SHORTCUT_ICON=""
+SHORTCUT_TYPE="Game;AdventureGames;"
+DEVELOPER="Wormwood / Wadjet Eye Games"
+PROGRAM_EXE="Primordia.exe"
+
+POL_SetupWindow_Init
+POL_Debug_Init
+
+POL_SetupWindow_presentation "$TITLE" "$DEVELOPER" "http://www.gog.com/gamecard/$GOGID" "$AUTHOR" "$PREFIX"
+
+POL_Call POL_GoG_setup "$GOGID" "$MD5SUM"
+
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+POL_Call POL_GoG_install
+
+# GoG work!
+Set_OS winxp
+
+POL_SetupWindow_VMS "128"
+
+# Doesn't hurt ;)
+POL_Wine_reboot
+
+POL_Shortcut "$PROGRAM_EXE" "$SHORTCUT_NAME" "$SHORTCUT_ICON" "" "$SHORTCUT_TYPE"
+POL_Shortcut_QuietDebug "$SHORTCUT_NAME"
+
+POL_SetupWindow_Close
+
+exit 0
