@@ -1,0 +1,54 @@
+#!/bin/bash
+# Date : (2013-07-13 09-30)
+# Last revision : (2013-07-13 09-00)
+# Wine version used : 1.4.1
+# Distribution used to test : Fedora 17
+# Author : retronautti
+# Script licence : GPL v.2
+# Program licence : Retail
+# Depend :
+
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+
+GOGID="leisure_suit_larry_love_for_sail"
+PREFIX="Larry7_gog"
+WORKING_WINE_VERSION="1.4.1"
+# setup_larry7_2.0.0.11.exe
+MD5SUM="b718998e2f75722254ac3c19256dcee1"
+
+TITLE="GOG.com - Leisure Suit Larry 7: Love for Sail!"
+DEVELOPER="Sierra / Codemasters"
+SHORTCUT_NAME="Leisure Suit Larry 7: Love for Sail!"
+SHORTCUT_ICON=""
+SHORTCUT_TYPE="Game;AdventureGame;"
+PROGRAM_EXE="SIERW5.EXE"
+
+POL_SetupWindow_Init
+#POL_SetupWindow_SetID 1329
+POL_Debug_Init
+
+POL_SetupWindow_presentation "$TITLE" "$DEVELOPER" "http://www.gog.com/gamecard/$GOGID" "retronautti" "$PREFIX"
+
+POL_Call POL_GoG_setup "$GOGID" "$MD5SUM"
+
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+POL_Call POL_GoG_install
+
+# GoG work!
+Set_OS winxp
+
+POL_SetupWindow_VMS "128"
+
+# Doesn't hurt ;)
+POL_Wine_reboot
+
+# Creates a shortcut with default POL icon since there are no larry icons on POL site
+POL_Shortcut "$PROGRAM_EXE" "$SHORTCUT_NAME" "$SHORTCUT_ICON" "" "$SHORTCUT_TYPE"
+POL_Shortcut_QuietDebug "$SHORTCUT_NAME"
+
+POL_SetupWindow_Close
+
+exit 0
