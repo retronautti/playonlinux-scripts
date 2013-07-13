@@ -1,0 +1,54 @@
+#!/bin/bash
+# Date : (2013-07-13 10-00)
+# Last revision : (2013-07-13 10-00)
+# Wine version used : 1.5.22
+# Distribution used to test : Fedora 17
+# Author : retronautti
+# Script licence : GPL v.2
+# Program licence : Retail
+# Depend :
+
+[ -z "$PLAYONLINUX" ] && exit 0
+source "$PLAYONLINUX/lib/sources"
+
+SCRIPT_AUTHOR="retronautti"
+GOGID="king_of_dragon_pass"
+PREFIX="KingOfDragonPass_gog"
+WORKING_WINE_VERSION="1.5.22"
+# setup_kodp_2.0.0.12.exe
+MD5SUM="bb2fcffbb6a01493b26c92765f60fc2f"
+
+TITLE="GOG.com - King of Dragon Pass"
+DEVELOPER="A Sharp"
+SHORTCUT_NAME="King of Dragon Pass"
+SHORTCUT_ICON=""
+SHORTCUT_TYPE="Game;Strategy;RolePlaying;"
+PROGRAM_EXE="KoDP.exe"
+
+POL_SetupWindow_Init
+POL_Debug_Init
+
+POL_SetupWindow_presentation "$TITLE" "$DEVELOPER" "http://www.gog.com/gamecard/$GOGID" "$SCRIPT_AUTHOR" "$PREFIX"
+
+POL_Call POL_GoG_setup "$GOGID" "$MD5SUM"
+
+POL_Wine_SelectPrefix "$PREFIX"
+POL_Wine_PrefixCreate "$WORKING_WINE_VERSION"
+
+POL_Call POL_GoG_install
+
+# GoG work!
+Set_OS winxp
+
+POL_SetupWindow_VMS "128"
+# FIXME: set wine to emulate virtual desktop in 640x480
+
+# Doesn't hurt ;)
+POL_Wine_reboot
+
+POL_Shortcut "$PROGRAM_EXE" "$SHORTCUT_NAME" "$SHORTCUT_ICON" "" "$SHORTCUT_TYPE"
+POL_Shortcut_QuietDebug "$SHORTCUT_NAME"
+
+POL_SetupWindow_Close
+
+exit 0
